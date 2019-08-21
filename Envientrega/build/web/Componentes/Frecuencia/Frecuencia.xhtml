@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+   <f:view contentType="text/html">
+        <h:head>
+        
+            <script>
+
+
+        PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+                dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+                dayNamesShort: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D','L','M','M','J','V','S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText : 'Todo el día'
+        };
+        
+        </script>
+            <style type="text/css">
+    .value {
+        width: 700px;
+        height: 400px
+    }
+</style>
+         </h:head>
+       <h:body>
+           <h:form>
+               
+               <h:panelGrid columns="1" columnClasses="value" >
+                   <p:schedule id="scheduleLocale" value="#{frecuenceBean.temp.eventModel}" locale="es"  >
+                       <p:ajax event="dateSelect" update="panFrecuence" oncomplete="PF('dlgFrecuence').show();" /> 
+                       <p:ajax event="eventSelect" update="dlg2 eventDetails" listener="#{frecuenceBean.selectEvent}" oncomplete="PF('dlgMovilFrecuence').show();"/>
+                   </p:schedule>
+               <p:contextMenu for="scheduleLocale">
+                    <p:menuitem value="Crear Frecuencia" />
+                    
+               </p:contextMenu>
+               </h:panelGrid>   
+                    
+              <!-- <p:calendar mode="inline"  locale="es"  style="height: 1000px;"  /> -->
+                <p:dialog widgetVar="dlgFrecuence" id="dlg1" header="Crear Frecuencia" showEffect="clip" hideEffect="clip">
+                    <h:panelGrid id="panFrecuence" columns="2">
+                        <p:outputLabel for="from" value="From:" />
+                        <p:calendar id="from" value="#{frecuenceBean.temp.frecuence.day}" locale="es" pattern="dd/MM/yyyy"/>
+                        
+                        <p:commandButton id="addButton" value="Crear" action="#{frecuenceBean.addEvent()}" oncomplete="PF('scheduleLocale').update() PF('dlgFrecuence').hide();" />
+                        <p:commandButton  value="Cancelar" />
+                       
+                    </h:panelGrid>
+                </p:dialog>    
+                   
+              <p:dialog widgetVar="dlgMovilFrecuence" id="dlg2" header="Frecuencia del dia #{frecuenceBean.temp.fecha}" >
+                  <h:panelGrid id="eventDetails"  rendered="#{not empty frecuenceBean.temp.movil}">
+                        <p:dataTable id="tabMovil" value="#{frecuenceBean.temp.movil}" var="movil">
+                            
+                            <p:column headerText="Movil">
+                                <h:outputText value="Movil #{movil.codeMovil}"/>
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{movil.nameMovil}"/>
+                            </p:column>
+                            <p:column headerText="Identificación">
+                                <h:outputText value="#{movil.identificationMovil}"/>
+                            </p:column>
+                            
+                        </p:dataTable>
+                       
+                    </h:panelGrid>
+                </p:dialog>   
+              
+            </h:form>
+       </h:body>
+       
+   </f:view>
+       
+</html>

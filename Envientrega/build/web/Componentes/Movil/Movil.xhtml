@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+ <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+     
+    <f:view contentType="text/html">
+     <h:head>
+        <title>Facelet Title</title>
+        
+    </h:head>
+    <h:body>
+        <h:form id="form1">
+            
+            <p:dataTable value="#{movilBean.temp.listMovil}" var="movil" id="tabMovil" 
+                         rowKey="#{movil.identificacion}" selection="#{movilBean.temp.select}" selectionMode="single" >
+                 <f:facet name="header">
+                     Tabla de Moviles
+                     <div>
+                         <p:commandButton value="Registrar un Movil" onclick="PF('dlgAgregar').show();"/>
+                     </div>
+                     
+                    </f:facet>
+                
+                <p:ajax event="rowSelect" update=":form1:dlg2" oncomplete="PF('dlgMostrar').show()" />
+                <p:ajax event="contextMenu" update=":form1:dlg3 :form1:dlg4"/>
+                
+                <p:column headerText="Codigo Movil">
+                        <h:outputText value="Movil #{movil.codigo}"/>
+                    </p:column>
+                    <p:column headerText="Cedula">
+                        <h:outputText value="#{movil.identificacion}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{movil.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{movil.telefono}"/>
+                    </p:column>
+            </p:dataTable>
+            
+            <p:contextMenu for="tabMovil">
+                <p:menuitem value="Actualizar" onclick="PF('dlgActualizar').show()" action="#{movilBean.copy()}"/>
+                <p:menuitem value="Eliminar" onclick="PF('dlgEliminar').show()" />
+            </p:contextMenu>
+            
+            <p:layoutUnit id="layRegistrar" position="center">
+                <p:growl id="growl" showDetail="true" sticky="true" />
+                
+                
+                
+                
+                 <p:dialog id="dlg1" widgetVar="dlgAgregar" header="Agregar Movil" >
+                     <h:panelGrid id="panAgregar"  cellpadding="6"   >
+                                
+                         <p:inputText placeholder="Nombre"  value="#{movilBean.temp.aux.nombre}"  />
+                                
+                               
+                         <p:inputText placeholder="Identificación" value="#{movilBean.temp.aux.identificacion}"  >
+                                 
+                                </p:inputText>
+                                
+                                
+                                <p:inputText placeholder="Codigo Movil" value="#{movilBean.temp.aux.codigo}" >
+                                    
+                                </p:inputText>
+
+                                <p:inputText placeholder="Dirección" value="#{movilBean.temp.aux.direccion}" />
+
+                                
+                                <p:inputText placeholder="Telefono" value="#{movilBean.temp.aux.telefono}" />
+
+                                
+                                <p:inputText placeholder="Persona de referencia" value="#{movilBean.temp.aux.refenrenciaNombre}" />
+
+                                
+                                <p:inputText placeholder="Telefono de contacto" value="#{movilBean.temp.aux.referenciaTelefono}"/>
+     
+                                
+                            </h:panelGrid>
+                            
+                            <h:panelGrid cellpadding="5" columns="2">
+                                <p:commandButton value="Agregar" action="#{movilBean.addMovil()}" onclick="PF('dllgAgregar').hide()" update=":form1:tabMovil" />
+                                    
+                                <p:commandButton value="Cancelar"  onclick="PF('dllgAgregar').hide()" />
+                                    
+                                </h:panelGrid>
+                            
+                        </p:dialog>
+                
+                
+                <p:dialog id="dlg2" widgetVar="dlgMostrar" header="Información movil" >
+                            <h:outputText value="Movil #{movilBean.temp.select.codigo}" />
+                            <h:panelGrid cellpadding="6" columnClasses="label,value" columns="2">
+                            
+                             
+                              <h:outputText value="Nombre:" />
+                             <h:outputText value="#{movilBean.temp.select.nombre}"/>
+                              <h:outputText value="Identificación" />
+                             <h:outputText value="#{movilBean.temp.select.identificacion}"/>
+                              <h:outputText value="Telefono:" />
+                             <h:outputText value=" #{movilBean.temp.select.telefono}"/>
+                              <h:outputText value="Dirección:" />
+                             <h:outputText value=" #{movilBean.temp.select.direccion}"/>
+                              <h:outputText value="Contacto:" />
+                             <h:outputText value=" #{movilBean.temp.select.refenrenciaNombre}"/>
+                              <h:outputText value="Telefono contacto: " />
+                             <h:outputText value="#{movilBean.temp.select.referenciaTelefono}"/>
+                            </h:panelGrid>
+                        </p:dialog>
+                
+                <p:dialog id="dlg3" widgetVar="dlgActualizar" header="Actualizar Movil" >
+                            <h:panelGrid columns="2" id="panActualizar" cellpadding="6" rendered="#{not empty movilBean.temp.select}" columnClasses="label,value" >
+                                <h:outputText value="Nombre:" />
+                                <p:inputText  value="#{movilBean.temp.select.nombre}"  />
+                                
+                                <h:outputText value="Identificación:"/>
+                                <p:inputText placeholder="Identificación" value="#{movilBean.temp.select.identificacion}"  >
+                                 
+                                </p:inputText>
+                                
+                                <h:outputText value="Codigo:"/>
+                                <p:inputText placeholder="Codigo Movil" value="#{movilBean.temp.select.codigo}" >
+                                    
+                                </p:inputText>
+
+                                <h:outputText value="Dirección:"/>
+                                <p:inputText placeholder="Dirección" value="#{movilBean.temp.select.direccion}" />
+
+                                <h:outputText value="Telefono:"/>
+                                <p:inputText placeholder="Telefono" value="#{movilBean.temp.select.telefono}" />
+
+                                <h:outputText value="Contacto:"/>
+                                <p:inputText placeholder="Persona de referencia" value="#{movilBean.temp.select.refenrenciaNombre}" />
+
+                                <h:outputText value="Telefono contacto:"/>
+                                <p:inputText placeholder="Telefono de contacto" value="#{movilBean.temp.select.referenciaTelefono}" />
+     
+                                
+                            </h:panelGrid>
+                            
+                            <h:panelGrid cellpadding="5" columns="2">
+                                <p:commandButton value="Modificar" action="#{movilBean.updateMovil()}" update=":form1" />
+                                    
+                                <p:commandButton value="Cancelar"  onclick="PF('dllgActualizar').hide()" />
+                                    
+                                </h:panelGrid>
+                            
+                        </p:dialog>
+                
+                <p:dialog id="dlg4" widgetVar="dlgEliminar" header="Eliminar Movil" >
+                    <h:outputText value="¿Esta seguro de eliminar al movil #{movilBean.temp.select.codigo}?" />
+                        <h:panelGrid id="panEliminar"  cellpadding="6" columns="2" columnClasses="label,value">
+                            
+                             <h:outputText value="Nombre:" />
+                             <h:outputText value="#{movilBean.temp.select.nombre}"/>
+                              <h:outputText value="Identificación" />
+                             <h:outputText value="#{movilBean.temp.select.identificacion}"/>
+                              <h:outputText value="Telefono:" />
+                             <h:outputText value=" #{movilBean.temp.select.telefono}"/>
+                              <h:outputText value="Dirección:" />
+                             <h:outputText value=" #{movilBean.temp.select.direccion}"/>
+                              <h:outputText value="Contacto:" />
+                             <h:outputText value=" #{movilBean.temp.select.refenrenciaNombre}"/>
+                              <h:outputText value="Telefono contacto: " />
+                             <h:outputText value="#{movilBean.temp.select.referenciaTelefono}"/> 
+                        
+                    </h:panelGrid>
+                    
+                     <h:panelGrid cellpadding="5" columns="2">
+                         <p:commandButton value="Eliminar" action="#{movilBean.deleteMovil()}" onclick="PF('dlgEliminar').hide()" update=":form1:tabMovil growl " />
+                                 
+                                 <p:commandButton value="Cancelar" onclick="PF('dlgEliminar').hide()"/>
+                                 
+                      </h:panelGrid>
+                </p:dialog>
+            </p:layoutUnit>
+        </h:form>
+    </h:body>
+    </f:view>
+    </html>
